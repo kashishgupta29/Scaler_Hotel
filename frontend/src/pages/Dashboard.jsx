@@ -280,8 +280,8 @@ export default function Dashboard() {
                           {room?.type ?? '—'}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-gray-700 text-sm">{new Date(b.start_time).toLocaleString()}</td>
-                      <td className="px-4 py-3 text-gray-700 text-sm">{new Date(b.end_time).toLocaleString()}</td>
+                      <td className="px-4 py-3 text-gray-700 text-sm">{new Date(b.start_time).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
+                      <td className="px-4 py-3 text-gray-700 text-sm">{new Date(b.end_time).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
                       <td className="px-4 py-3">
                         <span className="font-semibold text-green-600">₹{b.price}</span>
                       </td>

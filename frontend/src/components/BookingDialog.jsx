@@ -3,6 +3,16 @@ import { Dialog, Transition } from '@headlessui/react';
 import { api, ceilHoursBetween } from '../api/client.js';
 import { toast } from 'react-hot-toast';
 
+// Utility function to format dates as dd-mm-yyyy
+function formatDateDDMMYYYY(date) {
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  return `${day}-${month}-${year} ${hours}:${minutes}`;
+}
+
 export default function BookingDialog({ isOpen, onClose, bookingId = null }) {
   const isEdit = Boolean(bookingId);
   
@@ -79,12 +89,24 @@ export default function BookingDialog({ isOpen, onClose, bookingId = null }) {
       if (found) {
         const room = found.room ?? rooms.find(r => r.id === found.room_id);
         const roomNumber = room?.room_number;
+        // Convert ISO dates to local datetime format for input fields
+        const startDate = new Date(found.start_time);
+        const endDate = new Date(found.end_time);
+        const formatForInput = (date) => {
+          const year = date.getFullYear();
+          const month = String(date.getMonth() + 1).padStart(2, '0');
+          const day = String(date.getDate()).padStart(2, '0');
+          const hours = String(date.getHours()).padStart(2, '0');
+          const minutes = String(date.getMinutes()).padStart(2, '0');
+          return `${year}-${month}-${day}T${hours}:${minutes}`;
+        };
+        
         setForm({
           user_email: found.user_email,
           room_type: room?.type || '',
           room_number: roomNumber || '',
-          start_time: found.start_time.slice(0, 16),
-          end_time: found.end_time.slice(0, 16),
+          start_time: formatForInput(startDate),
+          end_time: formatForInput(endDate),
         });
       }
     } catch (e) {
@@ -120,13 +142,19 @@ export default function BookingDialog({ isOpen, onClose, bookingId = null }) {
       const startTime = new Date(form.start_time);
       const now = new Date();
       if (startTime < now) {
-        throw new Error('Cannot create bookings for past dates. Please select a future date.');
+        throw new Error(`Cannot create bookings for past dates. Please select a future date. Selected: ${formatDateDDMMYYYY(startTime)}`);
       }
       
       // Check if end time is before start time
       const endTime = new Date(form.end_time);
       if (endTime <= startTime) {
-        throw new Error('End time must be after start time.');
+        throw new Error(`End time must be after start time. Start: ${formatDateDDMMYYYY(startTime)}, End: ${formatDateDDMMYYYY(endTime)}`);
+      }
+      
+      // Additional validation: ensure minimum booking duration (e.g., 1 hour)
+      const diffHours = (endTime - startTime) / (1000 * 60 * 60);
+      if (diffHours < 1) {
+        throw new Error('Booking duration must be at least 1 hour.');
       }
       
       const payload = {
