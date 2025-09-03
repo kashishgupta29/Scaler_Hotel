@@ -44,6 +44,18 @@ export default function BookingDialog({ isOpen, onClose, bookingId = null }) {
       if (name === 'room_type') {
         newForm.room_number = '';
       }
+      
+      // Check for past date selection
+      if (name === 'start_time' && value) {
+        const selectedDate = new Date(value);
+        const now = new Date();
+        if (selectedDate < now) {
+          setError('Cannot select past dates for booking. Please choose a future date and time.');
+        } else {
+          setError('');
+        }
+      }
+      
       return newForm;
     });
   }
@@ -103,11 +115,25 @@ export default function BookingDialog({ isOpen, onClose, bookingId = null }) {
     try {
       const room = roomByNumber.get(String(form.room_number));
       if (!room) throw new Error('Select a valid room');
+      
+      // Check if start time is in the past
+      const startTime = new Date(form.start_time);
+      const now = new Date();
+      if (startTime < now) {
+        throw new Error('Cannot create bookings for past dates. Please select a future date.');
+      }
+      
+      // Check if end time is before start time
+      const endTime = new Date(form.end_time);
+      if (endTime <= startTime) {
+        throw new Error('End time must be after start time.');
+      }
+      
       const payload = {
         user_email: form.user_email,
         room_id: room.id,
-        start_time: new Date(form.start_time).toISOString(),
-        end_time: new Date(form.end_time).toISOString(),
+        start_time: startTime.toISOString(),
+        end_time: endTime.toISOString(),
       };
       if (isEdit) {
         await api.updateBooking(bookingId, payload);
