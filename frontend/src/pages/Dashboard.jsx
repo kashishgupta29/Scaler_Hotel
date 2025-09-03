@@ -218,16 +218,16 @@ export default function Dashboard() {
           </div>
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
-            <button onClick={applyFilters} className="inline-flex items-center gap-2 rounded-lg bg-primary-500 px-4 py-2 text-sm font-medium text-white shadow hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-200 transition-all duration-200">
+            <button onClick={applyFilters} className="inline-flex items-center gap-2 rounded-lg bg-primary-500 px-4 py-2 text-sm font-medium text-white shadow hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-200 transition-all duration-200 cursor-pointer">
               Apply Filters
             </button>
-            <button onClick={clearFilters} className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-100 transition-all duration-200">
+            <button onClick={clearFilters} className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-100 transition-all duration-200 cursor-pointer">
               Clear All
             </button>
             <button onClick={() => {
               setEditingBooking(null);
               setIsBookingDialogOpen(true);
-            }} className="ml-auto inline-flex items-center gap-2 rounded-lg bg-green-500 px-4 py-2 text-sm font-medium text-white shadow hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-200 transition-all duration-200">
+            }} className="ml-auto inline-flex items-center gap-2 rounded-lg bg-green-500 px-4 py-2 text-sm font-medium text-white shadow hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-200 transition-all duration-200 cursor-pointer">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
@@ -338,7 +338,7 @@ export default function Dashboard() {
                                 setEditingBooking(b);
                                 setIsBookingDialogOpen(true);
                               }}
-                              className="rounded border border-blue-200 bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100 transition-colors"
+                              className="rounded border border-blue-200 bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100 transition-colors cursor-pointer"
                             >
                               Edit
                             </button>
@@ -346,7 +346,7 @@ export default function Dashboard() {
                           {b.status === 'active' && (
                             <button
                               onClick={() => setCancelTarget({ id: b.id, estimate: refund, price: b.price })}
-                              className="rounded border border-red-200 bg-red-50 px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-100 transition-colors"
+                              className="rounded border border-red-200 bg-red-50 px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-100 transition-colors cursor-pointer"
                             >
                               Cancel
                             </button>
@@ -368,7 +368,7 @@ export default function Dashboard() {
                       <button onClick={() => {
                         setEditingBooking(null);
                         setIsBookingDialogOpen(true);
-                      }} className="rounded-md bg-primary-500 px-3 py-1.5 text-sm font-medium text-white shadow hover:bg-primary-600">
+                      }} className="rounded-md bg-primary-500 px-3 py-1.5 text-sm font-medium text-white shadow hover:bg-primary-600 cursor-pointer">
                         Create your first booking
                       </button>
                     </div>
