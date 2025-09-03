@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import healthRouter from './routes/health.js';
 import roomsRouter from './routes/rooms.js';
 import bookingsRouter from './routes/bookings.js';
+import mailRouter from './routes/mail.js';
 
 // Load env vars
 dotenv.config();
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use('/api/health', healthRouter);
 app.use('/api/rooms', roomsRouter);
 app.use('/api/bookings', bookingsRouter);
+app.use('/api/mail', mailRouter);
 
 app.get('/', (req, res) => {
   res.json({ status: 'ok', service: 'scalar-backend', time: new Date().toISOString() });

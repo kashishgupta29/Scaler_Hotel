@@ -67,10 +67,32 @@ export default function Dashboard() {
 
   async function confirmCancel(id) {
     try {
-      const res = await api.cancelBooking(id);
+      // Snapshot booking info before cancelling for email context
+      const booking = bookings.find(b => b.id === id);
+      const room = booking?.room || roomById.get(booking?.room_id);
+      const cancelRes = await api.cancelBooking(id);
       setCancelTarget(null);
       await loadBookings();
-      toast.success(`Booking cancelled. Refund ${res.refund_percent}% (₹${res.refund_amount})`);
+      toast.success(`Booking cancelled. Refund ${cancelRes.refund_percent}% (₹${cancelRes.refund_amount})`);
+      // Fire & forget cancellation email
+      if (booking) {
+        try {
+          await api.sendBookingCancelled({
+            email: booking.user_email,
+            booking: {
+              room_number: room?.room_number,
+              room_type: room?.type,
+              start_time: booking.start_time,
+              end_time: booking.end_time,
+              price: booking.price,
+            },
+            refund_percent: cancelRes.refund_percent,
+            refund_amount: cancelRes.refund_amount,
+          });
+        } catch (e) {
+          console.warn('Failed to send cancellation email:', e);
+        }
+      }
     } catch (e) {
       toast.error(e.message || 'Failed to cancel');
     }

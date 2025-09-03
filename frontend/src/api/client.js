@@ -28,7 +28,12 @@ export const api = {
   createBooking: (payload) => request('/bookings', { method: 'POST', body: JSON.stringify(payload) }),
   updateBooking: (id, payload) => request(`/bookings/${id}`, { method: 'PUT', body: JSON.stringify(payload) }),
   cancelBooking: (id) => request(`/bookings/${id}`, { method: 'DELETE' }),
+  // Mail endpoints
+  sendBookingConfirm: (payload) => request('/mail/booking-confirm', { method: 'POST', body: JSON.stringify(payload) }),
+  sendBookingCancelled: (payload) => request('/mail/booking-cancelled', { method: 'POST', body: JSON.stringify(payload) }),
 };
+
+
 
 export function ceilHoursBetween(startISO, endISO) {
   const start = new Date(startISO);
