@@ -268,7 +268,7 @@ export default function Dashboard() {
       {/* Booking Dialog */}
       <BookingDialog
         isOpen={isBookingDialogOpen}
-        booking={editingBooking}
+        bookingId={editingBooking?.id || null}
         onClose={(success) => {
           setIsBookingDialogOpen(false);
           setEditingBooking(null);
