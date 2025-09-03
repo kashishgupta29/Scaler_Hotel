@@ -119,11 +119,24 @@
              <td style="border-bottom:1px solid #e5e7eb;">${price != null ? `₹${price}` : '-'}</td>
            </tr>
            <tr>
-             <td style="border-bottom:1px solid #e5e7eb;">Refund</td>
-             <td style="border-bottom:1px solid #e5e7eb;">${refund_percent != null ? refund_percent : '-'}% (${refund_amount != null ? `₹${refund_amount}` : '-'})</td>
+             <td style="border-bottom:1px solid #e5e7eb;">Refund Amount</td>
+             <td style="border-bottom:1px solid #e5e7eb;color:#059669;font-weight:600;">${refund_amount != null ? `₹${refund_amount}` : '-'} (${refund_percent != null ? refund_percent : '-'}%)</td>
            </tr>
          </table>
-         <p style="color:#6b7280;margin-top:24px;">We hope to serve you again.</p>
+         
+         <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:16px;margin-top:24px;">
+           <h3 style="margin:0 0 12px 0;color:#065f46;font-size:16px;">Refund Policy</h3>
+           <ul style="margin:0;padding-left:20px;color:#047857;font-size:14px;line-height:1.6;">
+             <li><strong>48+ hours before check-in:</strong> 100% refund</li>
+             <li><strong>24-48 hours before check-in:</strong> 50% refund</li>
+             <li><strong>Less than 24 hours:</strong> No refund</li>
+           </ul>
+           <p style="margin:12px 0 0 0;color:#047857;font-size:13px;font-style:italic;">
+             Refunds will be processed within 5-7 business days to your original payment method.
+           </p>
+         </div>
+         
+         <p style="color:#6b7280;margin-top:24px;">We hope to serve you again. If you have any questions about your refund, please contact our support team.</p>
        </div>
      </body>
    </html>`;
