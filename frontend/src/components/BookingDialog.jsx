@@ -3,14 +3,14 @@ import { Dialog, Transition } from '@headlessui/react';
 import { api, ceilHoursBetween } from '../api/client.js';
 import { toast } from 'react-hot-toast';
 
-// Utility function to format dates as dd-mm-yyyy
+// Utility function to format dates as dd/mm/yyyy
 function formatDateDDMMYYYY(date) {
   const day = String(date.getDate()).padStart(2, '0');
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const year = date.getFullYear();
   const hours = String(date.getHours()).padStart(2, '0');
   const minutes = String(date.getMinutes()).padStart(2, '0');
-  return `${day}-${month}-${year} ${hours}:${minutes}`;
+  return `${day}/${month}/${year} ${hours}:${minutes}`;
 }
 
 export default function BookingDialog({ isOpen, onClose, bookingId = null }) {

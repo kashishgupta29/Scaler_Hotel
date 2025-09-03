@@ -302,8 +302,24 @@ export default function Dashboard() {
                           {room?.type ?? '—'}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-gray-700 text-sm">{new Date(b.start_time).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
-                      <td className="px-4 py-3 text-gray-700 text-sm">{new Date(b.end_time).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
+                      <td className="px-4 py-3 text-gray-700 text-sm">{(() => {
+                        const date = new Date(b.start_time);
+                        const day = String(date.getDate()).padStart(2, '0');
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const year = date.getFullYear();
+                        const hours = String(date.getHours()).padStart(2, '0');
+                        const minutes = String(date.getMinutes()).padStart(2, '0');
+                        return `${day}/${month}/${year} ${hours}:${minutes}`;
+                      })()}</td>
+                      <td className="px-4 py-3 text-gray-700 text-sm">{(() => {
+                        const date = new Date(b.end_time);
+                        const day = String(date.getDate()).padStart(2, '0');
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const year = date.getFullYear();
+                        const hours = String(date.getHours()).padStart(2, '0');
+                        const minutes = String(date.getMinutes()).padStart(2, '0');
+                        return `${day}/${month}/${year} ${hours}:${minutes}`;
+                      })()}</td>
                       <td className="px-4 py-3">
                         <span className="font-semibold text-green-600">₹{b.price}</span>
                       </td>
