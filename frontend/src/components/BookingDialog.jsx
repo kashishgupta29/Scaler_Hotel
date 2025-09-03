@@ -12,6 +12,7 @@ export default function BookingDialog({ isOpen, onClose, bookingId = null }) {
   
   const [form, setForm] = useState({ 
     user_email: '', 
+    room_type: '',
     room_number: '', 
     start_time: '', 
     end_time: '' 
@@ -23,6 +24,11 @@ export default function BookingDialog({ isOpen, onClose, bookingId = null }) {
     return map;
   }, [rooms]);
 
+  const filteredRooms = useMemo(() => {
+    if (!form.room_type) return rooms;
+    return rooms.filter(r => r.type === form.room_type);
+  }, [rooms, form.room_type]);
+
   const selectedRoom = roomByNumber.get(String(form.room_number));
   const price = useMemo(() => {
     const hours = ceilHoursBetween(form.start_time, form.end_time);
@@ -32,7 +38,14 @@ export default function BookingDialog({ isOpen, onClose, bookingId = null }) {
 
   function onChange(e) {
     const { name, value } = e.target;
-    setForm(prev => ({ ...prev, [name]: value }));
+    setForm(prev => {
+      const newForm = { ...prev, [name]: value };
+      // Reset room number when room type changes
+      if (name === 'room_type') {
+        newForm.room_number = '';
+      }
+      return newForm;
+    });
   }
 
   async function loadRooms() {
@@ -52,9 +65,11 @@ export default function BookingDialog({ isOpen, onClose, bookingId = null }) {
       const res = await api.getBookings();
       const found = (res.bookings || []).find(b => b.id === bookingId);
       if (found) {
-        const roomNumber = found.room?.room_number ?? rooms.find(r => r.id === found.room_id)?.room_number;
+        const room = found.room ?? rooms.find(r => r.id === found.room_id);
+        const roomNumber = room?.room_number;
         setForm({
           user_email: found.user_email,
+          room_type: room?.type || '',
           room_number: roomNumber || '',
           start_time: found.start_time.slice(0, 16),
           end_time: found.end_time.slice(0, 16),
@@ -72,7 +87,7 @@ export default function BookingDialog({ isOpen, onClose, bookingId = null }) {
       loadRooms(); 
       setError('');
       if (!isEdit) {
-        setForm({ user_email: '', room_number: '', start_time: '', end_time: '' });
+        setForm({ user_email: '', room_type: '', room_number: '', start_time: '', end_time: '' });
       }
     }
   }, [isOpen, isEdit]);
@@ -161,18 +176,36 @@ export default function BookingDialog({ isOpen, onClose, bookingId = null }) {
                       />
                     </div>
                     <div>
+                      <label className="block text-sm font-medium text-gray-700">Room Type</label>
+                      <select 
+                        name="room_type" 
+                        value={form.room_type} 
+                        onChange={onChange} 
+                        required 
+                        className="mt-1 block w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                      >
+                        <option value="" disabled>Select room type</option>
+                        <option value="Standard">Standard</option>
+                        <option value="Deluxe">Deluxe</option>
+                        <option value="Superior">Superior</option>
+                      </select>
+                    </div>
+                    <div>
                       <label className="block text-sm font-medium text-gray-700">Room Number</label>
                       <select 
                         name="room_number" 
                         value={form.room_number} 
                         onChange={onChange} 
                         required 
-                        className="mt-1 block w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                        disabled={!form.room_type}
+                        className="mt-1 block w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
                       >
-                        <option value="" disabled>Select room</option>
-                        {rooms.map(r => (
+                        <option value="" disabled>
+                          {!form.room_type ? 'Select room type first' : 'Select room'}
+                        </option>
+                        {filteredRooms.map(r => (
                           <option key={r.id} value={r.room_number}>
-                            {r.room_number} (Type {r.type} • ₹{r.price_per_hour}/hr)
+                            Room {r.room_number} • ₹{r.price_per_hour}/hr
                           </option>
                         ))}
                       </select>

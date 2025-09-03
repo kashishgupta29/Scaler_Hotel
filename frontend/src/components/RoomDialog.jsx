@@ -4,7 +4,7 @@ import { api } from '../api/client.js';
 import { toast } from 'react-hot-toast';
 
 export default function RoomDialog({ isOpen, onClose }) {
-  const [form, setForm] = useState({ room_number: '', type: 'A', price_per_hour: '' });
+  const [form, setForm] = useState({ room_number: '', type: 'Standard', price_per_hour: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -16,7 +16,7 @@ export default function RoomDialog({ isOpen, onClose }) {
   // Reset form when dialog opens
   function handleOnClose(success = false) {
     if (!success) {
-      setForm({ room_number: '', type: 'A', price_per_hour: '' });
+      setForm({ room_number: '', type: 'Standard', price_per_hour: '' });
       setError('');
     }
     onClose(success);
@@ -103,9 +103,9 @@ export default function RoomDialog({ isOpen, onClose }) {
                       required 
                       className="mt-1 block w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
                     >
-                      <option value="A">A</option>
-                      <option value="B">B</option>
-                      <option value="C">C</option>
+                      <option value="Standard">Standard</option>
+                      <option value="Deluxe">Deluxe</option>
+                      <option value="Superior">Superior</option>
                     </select>
                   </div>
 
