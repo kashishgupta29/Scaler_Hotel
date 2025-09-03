@@ -167,8 +167,25 @@ export default function BookingDialog({ isOpen, onClose, bookingId = null }) {
         await api.updateBooking(bookingId, payload);
         toast.success('Booking updated');
       } else {
-        await api.createBooking(payload);
+        const bookingResult = await api.createBooking(payload);
         toast.success('Booking created');
+        
+        // Send confirmation email for new bookings
+        try {
+          await api.sendBookingConfirm({
+            email: form.user_email,
+            booking: {
+              room_number: room.room_number,
+              room_type: room.type,
+              start_time: payload.start_time,
+              end_time: payload.end_time,
+              price: price,
+            },
+          });
+        } catch (e) {
+          console.warn('Failed to send confirmation email:', e);
+          // Don't fail the booking if email fails
+        }
       }
       onClose(true); // true indicates successful submission
     } catch (e) {
