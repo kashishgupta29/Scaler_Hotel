@@ -1,0 +1,32 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* Theme customization */
+@theme {
+  --color-primary-50: #e6f1ff;
+  --color-primary-100: #cce3ff;
+  --color-primary-200: #99c7ff;
+  --color-primary-300: #66aaff;
+  --color-primary-400: #338eff;
+  --color-primary-500: #0072ff; /* Scalar blue */
+  --color-primary-600: #005bd9;
+  --color-primary-700: #0045a6;
+  --color-primary-800: #002e73;
+  --color-primary-900: #001840;
+
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+
+  --color-success-500: #10b981; /* green */
+  --color-warning-500: #f59e0b; /* yellow */
+  --color-error-500: #ef4444;   /* red */
+
+  --font-sans: Inter, system-ui, sans-serif;
+}
