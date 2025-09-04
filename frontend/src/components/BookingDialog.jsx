@@ -122,6 +122,8 @@ export default function BookingDialog({ isOpen, onClose, bookingId = null }) {
       setError('');
       if (!isEdit) {
         setForm({ user_email: '', room_type: '', room_number: '', start_time: '', end_time: '' });
+      } else {
+        setLoading(true); // Set loading immediately for edit mode
       }
     }
   }, [isOpen, isEdit]);
@@ -225,7 +227,7 @@ export default function BookingDialog({ isOpen, onClose, bookingId = null }) {
                   as="h3"
                   className="text-lg font-medium leading-6 text-gray-900"
                 >
-                  {isEdit ? 'Edit Booking' : 'New Booking'}
+                  {isEdit && loading ? 'Loading...' : isEdit ? 'Edit Booking' : 'New Booking'}
                 </Dialog.Title>
 
                 <form onSubmit={onSubmit} className="mt-4 space-y-4">

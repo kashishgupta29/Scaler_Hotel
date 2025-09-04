@@ -29,12 +29,12 @@ router.post('/', async (req, res) => {
 
     const num = Number(room_number);
     const price = Number(price_per_hour);
-    const validTypes = ['A', 'B', 'C'];
+    const validTypes = ['Standard', 'Deluxe', 'Superior'];
 
     if (!Number.isInteger(num) || num <= 0)
       return res.status(400).json({ error: 'room_number must be a positive integer' });
     if (!validTypes.includes(type))
-      return res.status(400).json({ error: "type must be one of 'A','B','C'" });
+      return res.status(400).json({ error: "type must be one of 'Standard', 'Deluxe', 'Superior'" });
     if (!Number.isInteger(price) || price <= 0)
       return res.status(400).json({ error: 'price_per_hour must be a positive integer' });
 
