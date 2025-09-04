@@ -414,13 +414,26 @@ export default function Dashboard() {
       <BookingDialog
         isOpen={isBookingDialogOpen}
         bookingId={editingBooking?.id || null}
-        onClose={(success) => {
+        onClose={async (success) => {
           setIsBookingDialogOpen(false);
           setEditingBooking(null);
           if (success) {
             // Refresh both rooms and bookings data when booking is created/updated
-            loadRooms();
-            loadBookings();
+            console.log('Refreshing data after booking operation...');
+            
+            // Clear any filters first to ensure new booking is visible
+            if (filters.room_type || filters.room_number || filters.start_time || filters.end_time) {
+              setFilters({ room_type: '', room_number: '', start_time: '', end_time: '' });
+              // Wait a moment for filters to clear, then refresh
+              setTimeout(() => {
+                loadRooms();
+                loadBookings();
+              }, 100);
+            } else {
+              // No filters, refresh immediately
+              loadRooms();
+              loadBookings();
+            }
           }
         }}
       />
