@@ -18,11 +18,13 @@
  function fmt(dt) {
    try {
      const date = new Date(dt);
-     const day = String(date.getDate()).padStart(2, '0');
-     const month = String(date.getMonth() + 1).padStart(2, '0');
-     const year = date.getFullYear();
-     const hours = String(date.getHours()).padStart(2, '0');
-     const minutes = String(date.getMinutes()).padStart(2, '0');
+     // Convert to IST (UTC+5:30)
+     const istDate = new Date(date.getTime() + (5.5 * 60 * 60 * 1000));
+     const day = String(istDate.getUTCDate()).padStart(2, '0');
+     const month = String(istDate.getUTCMonth() + 1).padStart(2, '0');
+     const year = istDate.getUTCFullYear();
+     const hours = String(istDate.getUTCHours()).padStart(2, '0');
+     const minutes = String(istDate.getUTCMinutes()).padStart(2, '0');
      return `${day}/${month}/${year} ${hours}:${minutes}`;
    } catch {
      return String(dt || '');
