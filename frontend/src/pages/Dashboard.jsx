@@ -40,7 +40,7 @@ export default function Dashboard() {
   }
 
   useEffect(() => { loadRooms(); }, []);
-  useEffect(() => { loadBookings(); }, [filters]);
+  useEffect(() => { loadBookings(); }, []);
 
   function handleFilterChange(e) {
     const { name, value } = e.target;
