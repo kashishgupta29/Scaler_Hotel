@@ -3,6 +3,7 @@ import { api } from '../api/client.js';
 import { toast } from 'react-hot-toast';
 import BookingDialog from '../components/BookingDialog.jsx';
 import CancelDialog from '../components/CancelDialog.jsx';
+import RoomDialog from '../components/RoomDialog.jsx';
 
 export default function Dashboard() {
   const [rooms, setRooms] = useState([]);
@@ -13,6 +14,7 @@ export default function Dashboard() {
   const [cancelTarget, setCancelTarget] = useState(null);
   const [isBookingDialogOpen, setIsBookingDialogOpen] = useState(false);
   const [editingBooking, setEditingBooking] = useState(null);
+  const [isRoomDialogOpen, setIsRoomDialogOpen] = useState(false);
 
   const roomById = useMemo(() => new Map(rooms.map(r => [r.id, r])), [rooms]);
 
@@ -224,15 +226,23 @@ export default function Dashboard() {
             <button onClick={clearFilters} className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-100 transition-all duration-200 cursor-pointer">
               Clear All
             </button>
-            <button onClick={() => {
-              setEditingBooking(null);
-              setIsBookingDialogOpen(true);
-            }} className="ml-auto inline-flex items-center gap-2 rounded-lg bg-green-500 px-4 py-2 text-sm font-medium text-white shadow hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-200 transition-all duration-200 cursor-pointer">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-              New Booking
-            </button>
+            <div className="ml-auto flex gap-3">
+              <button onClick={() => setIsRoomDialogOpen(true)} className="inline-flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-all duration-200 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                New Room
+              </button>
+              <button onClick={() => {
+                setEditingBooking(null);
+                setIsBookingDialogOpen(true);
+              }} className="inline-flex items-center gap-2 rounded-lg bg-green-500 px-4 py-2 text-sm font-medium text-white shadow hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-200 transition-all duration-200 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                New Booking
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -388,6 +398,18 @@ export default function Dashboard() {
         cancelTarget={cancelTarget}
       />
 
+      {/* Room Dialog */}
+      <RoomDialog
+        isOpen={isRoomDialogOpen}
+        onClose={(success) => {
+          setIsRoomDialogOpen(false);
+          if (success) {
+            // Refresh rooms data when new room is created
+            loadRooms();
+          }
+        }}
+      />
+
       {/* Booking Dialog */}
       <BookingDialog
         isOpen={isBookingDialogOpen}
@@ -396,6 +418,8 @@ export default function Dashboard() {
           setIsBookingDialogOpen(false);
           setEditingBooking(null);
           if (success) {
+            // Refresh both rooms and bookings data when booking is created/updated
+            loadRooms();
             loadBookings();
           }
         }}
