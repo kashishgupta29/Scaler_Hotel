@@ -306,7 +306,7 @@ export default function BookingDialog({ isOpen, onClose, bookingId = null }) {
                   </div>
 
                   <div className="rounded-md bg-gray-50 px-3 py-2 text-sm flex justify-between items-center">
-                    <span className="text-gray-700">Dynamic Price</span>
+                    <span className="text-gray-700">Total Billing</span>
                     <span className="font-medium text-primary-600">₹{price || 0}</span>
                   </div>
 
